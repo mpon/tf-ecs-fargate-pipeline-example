@@ -6,7 +6,7 @@ provider "aws" {
 terraform {
   required_version = ">= 0.12"
   backend "s3" {
-    key = "terraform/dev/terraform.tfstate"
+    key    = "terraform/dev/terraform.tfstate"
     region = "ap-northeast-1"
   }
 }
