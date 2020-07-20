@@ -3,6 +3,7 @@ init:
 
 fmt:
 	terraform fmt -recursive -diff
+	terraform fmt -recursive -diff ../modules
 
 plan: fmt
 	terraform plan
