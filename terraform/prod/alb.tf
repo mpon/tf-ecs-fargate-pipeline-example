@@ -71,3 +71,70 @@ resource "aws_lb_target_group" "api_green" {
     path = "/" # TODO: change healthcheck path
   }
 }
+
+resource "aws_lb_target_group" "web_blue" {
+  name        = "${local.env}-web-blue"
+  port        = 3000
+  protocol    = "HTTP"
+  target_type = "ip"
+  vpc_id      = module.vpc.vpc_id
+
+  health_check {
+    path = "/" # TODO: change healthcheck path
+  }
+}
+
+resource "aws_lb_target_group" "web_green" {
+  name        = "${local.env}-web-green"
+  port        = 3000
+  protocol    = "HTTP"
+  target_type = "ip"
+  vpc_id      = module.vpc.vpc_id
+
+  health_check {
+    path = "/" # TODO: change healthcheck path
+  }
+}
+
+
+resource "aws_lb_listener_rule" "api" {
+  listener_arn = aws_lb_listener.public_https.arn
+  priority     = 100
+
+  action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.api_blue.arn
+  }
+
+  condition {
+    path_pattern {
+      values = ["/api/*"]
+    }
+  }
+
+  lifecycle {
+    # Target group will be updated by CodeDeploy
+    ignore_changes = [action]
+  }
+}
+
+resource "aws_lb_listener_rule" "web" {
+  listener_arn = aws_lb_listener.public_https.arn
+  priority     = 200
+
+  action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.web_blue.arn
+  }
+
+  condition {
+    path_pattern {
+      values = ["/*"]
+    }
+  }
+
+  lifecycle {
+    # Target group will be updated by CodeDeploy
+    ignore_changes = [action]
+  }
+}
