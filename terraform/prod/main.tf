@@ -10,3 +10,13 @@ terraform {
     region = "ap-northeast-1"
   }
 }
+
+data "terraform_remote_state" "common" {
+  backend = "s3"
+
+  config = {
+    bucket = var.remote_backend
+    key    = "terraform/common/terraform.tfstate"
+    region = "ap-northeast-1"
+  }
+}
