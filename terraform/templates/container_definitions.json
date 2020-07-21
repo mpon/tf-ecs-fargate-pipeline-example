@@ -1,7 +1,7 @@
 [
   {
     "name": "rails",
-    "image": "bitnami/rails:6",
+    "image": "alpine:latest",
     "cpu": 256,
     "memory": 512,
     "essential": true,
