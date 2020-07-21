@@ -47,3 +47,27 @@ resource "aws_lb_listener" "public_https" {
     }
   }
 }
+
+resource "aws_lb_target_group" "api_blue" {
+  name        = "${local.env}-api-blue"
+  port        = 3000
+  protocol    = "HTTP"
+  target_type = "ip"
+  vpc_id      = module.vpc.vpc_id
+
+  health_check {
+    path = "/" # TODO: change healthcheck path
+  }
+}
+
+resource "aws_lb_target_group" "api_green" {
+  name        = "${local.env}-api-green"
+  port        = 3000
+  protocol    = "HTTP"
+  target_type = "ip"
+  vpc_id      = module.vpc.vpc_id
+
+  health_check {
+    path = "/" # TODO: change healthcheck path
+  }
+}
