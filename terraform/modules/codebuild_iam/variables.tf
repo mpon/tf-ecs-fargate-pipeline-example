@@ -18,3 +18,8 @@ variable "codepipeline_artifacts_bucket_arn" {
   type        = string
   description = "CodePipeline artifacts S3 bucket ARN"
 }
+
+variable "codebuild_bucket_arn" {
+  type        = string
+  description = "Codebuild S3 bucket ARN"
+}

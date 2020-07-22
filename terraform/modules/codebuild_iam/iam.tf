@@ -113,6 +113,18 @@ data "aws_iam_policy_document" "policy" {
       "${var.codepipeline_artifacts_bucket_arn}/*",
     ]
   }
+
+  # Allow codebuild bucket
+  statement {
+    actions = [
+      "s3:ListBucket",
+      "s3:GetObject",
+    ]
+    resources = [
+      var.codebuild_bucket_arn,
+      "${var.codebuild_bucket_arn}/*",
+    ]
+  }
 }
 
 resource "aws_iam_role_policy_attachment" "role" {
