@@ -59,6 +59,25 @@ resource "aws_security_group_rule" "private_ingress_allow_all" {
   to_port           = 0
   protocol          = "-1"
   from_port         = 0
-  cidr_blocks       = ["0.0.0.0/0"]
+  self              = true
   security_group_id = aws_security_group.private.id
+}
+
+resource "aws_security_group" "db" {
+  name   = "${local.env}-db"
+  vpc_id = module.vpc.vpc_id
+
+  tags = {
+    Name        = "${local.env}-db"
+    Environment = "${local.env}"
+  }
+}
+
+resource "aws_security_group_rule" "db_ingress_allow_all" {
+  type              = "ingress"
+  to_port           = 5432
+  protocol          = "tcp"
+  from_port         = 5432
+  self              = true
+  security_group_id = aws_security_group.db.id
 }

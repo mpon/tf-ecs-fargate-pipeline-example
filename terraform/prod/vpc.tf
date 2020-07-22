@@ -14,6 +14,11 @@ module "vpc" {
     cidrsubnet(local.vpc_cidr, 4, 4),
     cidrsubnet(local.vpc_cidr, 4, 5),
   ]
+  database_subnets = [
+    cidrsubnet(local.vpc_cidr, 8, 96),
+    cidrsubnet(local.vpc_cidr, 8, 97),
+    cidrsubnet(local.vpc_cidr, 8, 98),
+  ]
 
   enable_nat_gateway     = true
   single_nat_gateway     = true

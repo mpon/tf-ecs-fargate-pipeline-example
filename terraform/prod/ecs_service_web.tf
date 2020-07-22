@@ -49,7 +49,7 @@ resource "aws_ecs_service" "web" {
 
   network_configuration {
     subnets         = module.vpc.private_subnets
-    security_groups = [aws_security_group.private.id]
+    security_groups = [aws_security_group.private.id, aws_security_group.db.id]
   }
 
   deployment_controller {
