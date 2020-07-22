@@ -79,9 +79,9 @@ resource "aws_codepipeline" "codepipeline" {
         Image1ArtifactName             = "BuildArtifacts"
         Image1ContainerName            = "IMAGE1_NAME"
         TaskDefinitionTemplateArtifact = "BuildArtifacts"
-        TaskDefinitionTemplatePath     = "ecs-config/${local.env}/api/taskdef.json"
+        TaskDefinitionTemplatePath     = "${local.env}/api/taskdef.json"
         AppSpecTemplateArtifact        = "BuildArtifacts"
-        AppSpecTemplatePath            = "ecs-config/${local.env}/api/appspec.yaml"
+        AppSpecTemplatePath            = "${local.env}/api/appspec.yaml"
       }
     }
 
@@ -99,9 +99,9 @@ resource "aws_codepipeline" "codepipeline" {
         Image1ArtifactName             = "BuildArtifacts"
         Image1ContainerName            = "IMAGE1_NAME"
         TaskDefinitionTemplateArtifact = "BuildArtifacts"
-        TaskDefinitionTemplatePath     = "ecs-config/${local.env}/web/taskdef.json"
+        TaskDefinitionTemplatePath     = "${local.env}/web/taskdef.json"
         AppSpecTemplateArtifact        = "BuildArtifacts"
-        AppSpecTemplatePath            = "ecs-config/${local.env}/web/appspec.yaml"
+        AppSpecTemplatePath            = "${local.env}/web/appspec.yaml"
       }
     }
   }

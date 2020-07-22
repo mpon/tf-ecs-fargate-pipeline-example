@@ -29,7 +29,7 @@ resource "aws_s3_bucket_object" "web_task_definition" {
 
 resource "aws_s3_bucket_object" "web_appspec" {
   bucket = aws_s3_bucket.codebuild.id
-  key    = "${local.env}/web/taskdef.json"
+  key    = "${local.env}/web/appspec.yaml"
   source = "${path.module}/templates/web/appspec.yaml"
   etag   = filemd5("${path.module}/templates/web/appspec.yaml")
 }
@@ -38,7 +38,7 @@ resource "aws_ecs_service" "web" {
   name            = "${local.env}-web"
   cluster         = aws_ecs_cluster.cluster.id
   task_definition = aws_ecs_task_definition.web.arn
-  desired_count   = 1
+  desired_count   = 0
   launch_type     = "FARGATE"
 
   load_balancer {
@@ -78,8 +78,8 @@ module "web_autoscaling" {
 
   cluster_name     = aws_ecs_cluster.cluster.name
   service_name     = aws_ecs_service.web.name
-  min_capacity     = 1
-  max_capacity     = 3
+  min_capacity     = 0
+  max_capacity     = 0
   cpu_target_value = 60
   role_arn         = data.terraform_remote_state.common.outputs.ecs_application_autoscaling_role_arn
 }
