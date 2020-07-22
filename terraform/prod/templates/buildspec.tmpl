@@ -1,0 +1,28 @@
+version: 0.2
+
+env:
+  variables:
+    DOCKER_BUILDKIT: 1
+    REPOSITORY_DOMAIN: ${repository_domain}
+    REPOSITORY_URL: ${repository_url}
+
+phases:
+  install:
+    runtime-versions:
+      docker: 18
+  pre_build:
+    commands:
+      - TAG=$${CODEBUILD_RESOLVED_SOURCE_VERSION:0:8}
+      - aws ecr get-login-password | docker login --username AWS --password-stdin $${REPOSITORY_DOMAIN}
+  build:
+    commands:
+      - docker image build -t $${REPOSITORY_URL}:latest .
+      - docker image tag $${REPOSITORY_URL}:latest $${REPOSITORY_URL}:$${TAG}
+      - docker image push $${REPOSITORY_URL}:$${TAG}
+      - docker image push $${REPOSITORY_URL}:latest
+  post_build:
+    commands:
+      - printf '{"Version":"1.0","ImageURI":"%s"}' $${REPOSITORY_URL}:$${TAG} > imageDetail.json
+artifacts:
+  files:
+    - imageDetail.json

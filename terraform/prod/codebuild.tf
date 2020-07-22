@@ -1,10 +1,30 @@
 module "codebuild_iam" {
   source                            = "../modules/codebuild_iam"
   name                              = "${local.env}-codebuild-service-role"
-  subnet_arns                       = module.vpc.private_subnets
+  subnet_arns                       = module.vpc.private_subnet_arns
   assets_bucket_arn                 = data.terraform_remote_state.common.outputs.assets_bucket.arn
   codepipeline_artifacts_bucket_arn = aws_s3_bucket.codepipeline.arn
+  codebuild_bucket_arn              = aws_s3_bucket.codebuild.arn
 }
+
+resource "random_pet" "codebuild" {
+  length = 3
+}
+
+resource "aws_s3_bucket" "codebuild" {
+  bucket = "${local.env}-codebuild-${random_pet.codebuild.id}"
+  acl    = "private"
+}
+
+resource "aws_s3_bucket_object" "buildspec" {
+  bucket = aws_s3_bucket.codebuild.id
+  key    = "${local.env}/buildspec.yaml"
+  content = templatefile("${path.module}/templates/buildspec.tmpl", {
+    repository_domain = dirname(data.terraform_remote_state.common.outputs.ecr_rails_blog_example_repository_url),
+    repository_url    = data.terraform_remote_state.common.outputs.ecr_rails_blog_example_repository_url
+  })
+}
+
 
 resource "aws_codebuild_project" "build" {
   name         = "${local.env}-build"
@@ -26,7 +46,7 @@ resource "aws_codebuild_project" "build" {
     type            = "GITHUB"
     location        = "https://github.com/mpon/rails-blog-example.git"
     git_clone_depth = 1
-    buildspec       = "ecs-config/${local.env}/buildspec.yaml"
+    buildspec       = "${aws_s3_bucket.codebuild.arn}/${aws_s3_bucket_object.buildspec.key}"
   }
 
   cache {
