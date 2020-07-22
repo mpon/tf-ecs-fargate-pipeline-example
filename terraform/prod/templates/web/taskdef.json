@@ -1,0 +1,45 @@
+{
+  "executionRoleArn": "${execution_role_arn}",
+  "containerDefinitions": [
+    {
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "${awslogs_group}",
+          "awslogs-region": "${awslogs_region}",
+          "awslogs-stream-prefix": "rails"
+        }
+      },
+      "portMappings": [
+        {
+          "hostPort": 3000,
+          "protocol": "tcp",
+          "containerPort": 3000
+        }
+      ],
+      "environment": [
+        {
+          "name": "AWS_REGION",
+          "value": "ap-northeast-1"
+        },
+        {
+          "name": "RAILS_LOG_TO_STDOUT",
+          "value": "true"
+        },
+        {
+          "name": "RAILS_ENV",
+          "value": "production"
+        }
+      ],
+      "image": "<IMAGE1_NAME>",
+      "essential": true,
+      "name": "rails"
+    }
+  ],
+  "memory": "${memory}",
+  "taskRoleArn": "${task_role_arn}",
+  "family": "${family}",
+  "requiresCompatibilities": ["FARGATE"],
+  "networkMode": "awsvpc",
+  "cpu": "${cpu}"
+}

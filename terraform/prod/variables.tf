@@ -7,3 +7,6 @@ variable "remote_backend" {
   type        = string
   description = "Terraform Remote Backend to get remote state"
 }
+
+data "aws_caller_identity" "current" {}
+data "aws_region" "current" {}

@@ -23,6 +23,12 @@ phases:
   post_build:
     commands:
       - printf '{"Version":"1.0","ImageURI":"%s"}' $${REPOSITORY_URL}:$${TAG} > imageDetail.json
+      - aws s3 sync s3://${bucket}/ . --recursive
 artifacts:
   files:
+    - ${env}/api/taskdef.json
+    - ${env}/api/appspec.yaml
+    - ${env}/web/taskdef.json
+    - ${env}/web/appspec.yaml
+    - web-taskdef.json
     - imageDetail.json

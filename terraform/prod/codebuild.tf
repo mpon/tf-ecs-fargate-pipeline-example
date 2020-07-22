@@ -19,12 +19,13 @@ resource "aws_s3_bucket" "codebuild" {
 resource "aws_s3_bucket_object" "buildspec" {
   bucket = aws_s3_bucket.codebuild.id
   key    = "${local.env}/buildspec.yaml"
-  content = templatefile("${path.module}/templates/buildspec.tmpl", {
+  content = templatefile("${path.module}/templates/buildspec.yaml", {
     repository_domain = dirname(data.terraform_remote_state.common.outputs.ecr_rails_blog_example_repository_url),
-    repository_url    = data.terraform_remote_state.common.outputs.ecr_rails_blog_example_repository_url
+    repository_url    = data.terraform_remote_state.common.outputs.ecr_rails_blog_example_repository_url,
+    bucket            = aws_s3_bucket.codebuild.id,
+    env               = local.env
   })
 }
-
 
 resource "aws_codebuild_project" "build" {
   name         = "${local.env}-build"

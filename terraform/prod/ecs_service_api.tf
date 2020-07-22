@@ -13,6 +13,27 @@ resource "aws_ecs_task_definition" "api" {
   requires_compatibilities = ["FARGATE"]
 }
 
+resource "aws_s3_bucket_object" "api_task_definition" {
+  bucket = aws_s3_bucket.codebuild.id
+  key    = "${local.env}/api/taskdef.json"
+  content = templatefile("${path.module}/templates/api/taskdef.json", {
+    execution_role_arn = module.ecs_task_execution_iam.service_role_arn,
+    awslogs_group      = aws_cloudwatch_log_group.api.name,
+    awslogs_region     = data.aws_region.current.name,
+    memory             = 512,
+    task_role_arn      = module.ecs_task_execution_iam.service_role_arn,
+    family             = aws_ecs_task_definition.api.family,
+    cpu                = 256
+  })
+}
+
+resource "aws_s3_bucket_object" "api_appspec" {
+  bucket = aws_s3_bucket.codebuild.id
+  key    = "${local.env}/api/taskdef.json"
+  source = "${path.module}/templates/api/appspec.yaml"
+  etag   = filemd5("${path.module}/templates/api/appspec.yaml")
+}
+
 resource "aws_ecs_service" "api" {
   name            = "${local.env}-api"
   cluster         = aws_ecs_cluster.cluster.id

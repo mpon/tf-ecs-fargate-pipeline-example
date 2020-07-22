@@ -13,6 +13,27 @@ resource "aws_ecs_task_definition" "web" {
   requires_compatibilities = ["FARGATE"]
 }
 
+resource "aws_s3_bucket_object" "web_task_definition" {
+  bucket = aws_s3_bucket.codebuild.id
+  key    = "${local.env}/web/taskdef.json"
+  content = templatefile("${path.module}/templates/web/taskdef.json", {
+    execution_role_arn = module.ecs_task_execution_iam.service_role_arn,
+    awslogs_group      = aws_cloudwatch_log_group.web.name,
+    awslogs_region     = data.aws_region.current.name,
+    memory             = 512,
+    task_role_arn      = module.ecs_task_execution_iam.service_role_arn,
+    family             = aws_ecs_task_definition.web.family,
+    cpu                = 256
+  })
+}
+
+resource "aws_s3_bucket_object" "web_appspec" {
+  bucket = aws_s3_bucket.codebuild.id
+  key    = "${local.env}/web/taskdef.json"
+  source = "${path.module}/templates/web/appspec.yaml"
+  etag   = filemd5("${path.module}/templates/web/appspec.yaml")
+}
+
 resource "aws_ecs_service" "web" {
   name            = "${local.env}-web"
   cluster         = aws_ecs_cluster.cluster.id
