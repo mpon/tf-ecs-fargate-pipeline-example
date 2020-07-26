@@ -5,6 +5,9 @@ env:
     DOCKER_BUILDKIT: 1
     REPOSITORY_DOMAIN: ${repository_domain}
     REPOSITORY_URL: ${repository_url}
+  parameter-store:
+    SECRET_KEY_BASE: "${secret_key_base}"
+    DATABASE_URL: "${database_url}"
 
 phases:
   install:
@@ -24,6 +27,16 @@ phases:
     commands:
       - printf '{"Version":"1.0","ImageURI":"%s"}' $${REPOSITORY_URL}:$${TAG} > imageDetail.json
       - aws s3 sync s3://${bucket}/ .
+      - docker container run
+        -e SECRET_KEY_BASE=$${SECRET_KEY_BASE}
+        -e DATABASE_URL=$${DATABASE_URL}
+        $${REPOSITORY_URL}:$${TAG}
+        rake db:create RAILS_ENV=production
+      - docker container run
+        -e SECRET_KEY_BASE=$${SECRET_KEY_BASE}
+        -e DATABASE_URL=$${DATABASE_URL}
+        $${REPOSITORY_URL}:$${TAG}
+        rake db:migrate RAILS_ENV=production
 artifacts:
   files:
     - ${env}/api/taskdef.json

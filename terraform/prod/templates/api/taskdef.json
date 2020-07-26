@@ -29,6 +29,16 @@
             "value": "production"
           }
         ],
+        "secrets": [
+          {
+            "name": "SECRET_KEY_BASE",
+            "valueFrom": "${secret_key_base_arn}"
+          },
+          {
+            "name": "DATABASE_URL",
+            "valueFrom": "${database_url_arn}"
+          }
+        ],
         "image": "<IMAGE1_NAME>",
         "essential": true,
         "name": "rails"
