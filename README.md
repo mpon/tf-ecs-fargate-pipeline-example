@@ -39,12 +39,23 @@ aws s3api create-bucket --bucket $REMOTE_BACKEND --region ap-northeast-1 \
 aws s3api put-bucket-versioning --bucket $REMOTE_BACKEND --versioning-configuration Status=Enabled
 ```
 
-### 2. terraform
+### 2. terraform apply(frist time)
 
 ```bash
-# cd terraform/[common | dev | stg | prod]
+cd terraform/common
 export REMOTE_BACKEND=<your bucket>
 make init
 make plan
 make apply
 ```
+
+### 3. terraform apply(prod)
+
+```bash
+cd terraform/prod
+export REMOTE_BACKEND=<your bucket>
+make init
+make plan
+make apply # If you failed to apply, please retry
+```
+
