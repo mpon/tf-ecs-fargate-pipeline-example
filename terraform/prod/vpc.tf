@@ -26,6 +26,10 @@ module "vpc" {
   enable_dhcp_options    = true
   enable_dns_hostnames   = true
 
+  enable_s3_endpoint                   = true
+  ecr_dkr_endpoint_private_dns_enabled = true
+  ecr_dkr_endpoint_security_group_ids  = [aws_security_group.private.id]
+
   tags = {
     Environment = local.env
   }
