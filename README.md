@@ -27,23 +27,33 @@ Example to create ECS Fargate infrastructures
     └── modules  # terraform module
 ```
 
+## Requirements
+
+- [aws-cli](https://aws.amazon.com/jp/cli/)
+- [tfenv](https://github.com/tfutils/tfenv)
+
 ## Getting Started
+
+### 0. environments
+
+```bash
+export REGION=ap-northeast-1 # This example use ap-northeast-1 region
+export TF_VAR_remote_backend=<your s3 bucket>
+export GITHUB_TOKEN=***********************
+```
 
 ### 1. create remote backend
 
 ```bash
-# This example use ap-northeast-1 region
-export REMOTE_BACKEND=<your bucket>
-aws s3api create-bucket --bucket $REMOTE_BACKEND --region ap-northeast-1 \
-    --create-bucket-configuration LocationConstraint=ap-northeast-1
-aws s3api put-bucket-versioning --bucket $REMOTE_BACKEND --versioning-configuration Status=Enabled
+aws s3api create-bucket --bucket $TF_VAR_remote_backend --region $REGION \
+    --create-bucket-configuration LocationConstraint=$REGION
+aws s3api put-bucket-versioning --bucket $TF_VAR_remote_backend --versioning-configuration Status=Enabled
 ```
 
 ### 2. terraform apply(frist time)
 
 ```bash
 cd terraform/common
-export REMOTE_BACKEND=<your bucket>
 make init
 make plan
 make apply
@@ -53,9 +63,7 @@ make apply
 
 ```bash
 cd terraform/prod
-export REMOTE_BACKEND=<your bucket>
 make init
 make plan
 make apply # If you failed to apply, please retry
 ```
-
