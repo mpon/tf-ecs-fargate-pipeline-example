@@ -1,29 +1,27 @@
 # tf-ecs-fargate-pipeline-example
 
-Example to create ECS Fargate infrastructures
+This is a terraform configuration for deploying a sample Rails application [mpon/rails-blog-example](https://github.com/mpon/rails-blog-example) in Fargate.
 
-- VPC
-- Public Subnet
-- Private Subnet
-- RDS
-- ElastiCache
-- Elasticsearch
-- ECS on Fargate
-- ECS Scheduled Task
-- CodePipline
-- CodeBuild
-- CodeDeploy
+- [x] VPC
+- [x] ECS on Fargate
+- [x] CodePipline
+- [x] CodeBuild
+- [x] CodeDeploy
+- [x] RDS
+- [ ] ECS Scheduled Task
 
 ## Structure
 
 ```console
 .
 └── terraform
-    ├── common # resource throught account like a iam, ecr registry etc.
+    ├── common # resources that exist throught account, like a iam, ecr registry etc.
     │   ├── main.tf # provider, terraform  backend settings etc.
     │   ├── outputs.tf # for another env
     │   └── variables.tf # for constant variables
-    ├── dev/stg/prod # each environments
+    ├── dev
+    ├── stg
+    ├── prod
     └── modules  # terraform module
 ```
 
@@ -37,8 +35,11 @@ Example to create ECS Fargate infrastructures
 ### 0. environments
 
 ```bash
-export REGION=ap-northeast-1 # This example use ap-northeast-1 region
+# This example use ap-northeast-1 region
+export REGION=ap-northeast-1
+# S3 bucket to be used by Terraform remote backend
 export TF_VAR_remote_backend=<your s3 bucket>
+# GitHub personal token to be used by github provider
 export GITHUB_TOKEN=***********************
 ```
 
