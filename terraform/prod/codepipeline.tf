@@ -35,7 +35,7 @@ resource "aws_codepipeline" "codepipeline" {
 
       # ref: https://docs.aws.amazon.com/ja_jp/codepipeline/latest/userguide/action-reference-GitHub.html
       configuration = {
-        Owner                = local.github_owner
+        Owner                = dirname(data.github_repository.repo.full_name)
         Repo                 = data.github_repository.repo.name
         Branch               = "master"
         PollForSourceChanges = false
@@ -108,7 +108,7 @@ resource "aws_codepipeline" "codepipeline" {
 }
 
 data "github_repository" "repo" {
-  full_name = "${local.github_owner}/${local.github_repo}"
+  full_name = "${var.github_owner}/${var.github_repo}"
 }
 
 resource "random_id" "webhook_secret" {

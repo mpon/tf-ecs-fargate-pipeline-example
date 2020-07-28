@@ -1,8 +1,25 @@
 locals {
-  env          = "prod"
-  vpc_cidr     = "10.10.0.0/16"
-  github_owner = "mpon"
-  github_repo  = "rails-blog-example"
+  env = "prod"
+}
+
+variable "vpc_cidr" {
+  type    = string
+  default = "10.10.0.0/16"
+}
+
+variable "azs" {
+  type    = list(string)
+  default = ["ap-northeast-1a", "ap-northeast-1c", "ap-northeast-1d"]
+}
+
+variable "github_owner" {
+  type    = string
+  default = "mpon"
+}
+
+variable "github_repo" {
+  type    = string
+  default = "rails-blog-example"
 }
 
 variable "remote_backend" {
