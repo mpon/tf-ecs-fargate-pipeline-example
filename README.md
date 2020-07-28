@@ -61,7 +61,7 @@ aws s3api create-bucket --bucket $TF_VAR_remote_backend --region $REGION \
 aws s3api put-bucket-versioning --bucket $TF_VAR_remote_backend --versioning-configuration Status=Enabled
 ```
 
-### 2. terraform apply(frist time)
+### 2. terraform apply(common)
 
 We have to create ECR, IAM, and so on first. This output value will be used by another environments.
 
@@ -84,3 +84,10 @@ make apply
 ```
 
 Then, it shows ALB DNS name in terminal, you can access it.
+
+## Clean up
+
+```bash
+cd terraform/prod
+terraform destroy
+```

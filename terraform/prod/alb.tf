@@ -2,7 +2,7 @@ resource "aws_lb" "public" {
   name                       = "${local.env}-public"
   security_groups            = [aws_security_group.public.id, aws_security_group.private.id]
   subnets                    = module.vpc.public_subnets
-  enable_deletion_protection = true
+  enable_deletion_protection = false # to make it easier to destroy at this repository example
 
   tags = {
     Name        = "${local.env}-public"

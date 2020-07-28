@@ -3,8 +3,9 @@ resource "random_pet" "codepipeline" {
 }
 
 resource "aws_s3_bucket" "codepipeline" {
-  bucket = "${local.env}-codepipeline-${random_pet.codepipeline.id}"
-  acl    = "private"
+  bucket        = "${local.env}-codepipeline-${random_pet.codepipeline.id}"
+  acl           = "private"
+  force_destroy = true # to make it easier to destroy at this repository example
 }
 
 module "codepipeline_iam" {

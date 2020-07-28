@@ -3,8 +3,9 @@ resource "random_pet" "access_logs" {
 }
 
 resource "aws_s3_bucket" "access_logs" {
-  bucket = "access-logs-${random_pet.access_logs.id}"
-  acl    = "private"
+  bucket        = "access-logs-${random_pet.access_logs.id}"
+  acl           = "private"
+  force_destroy = true # to make it easier to destroy at this repository example
 }
 
 resource "aws_s3_bucket_policy" "access_logs" {
