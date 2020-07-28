@@ -10,7 +10,9 @@ This is a terraform configuration for deploying a sample Rails application [mpon
 - [x] RDS
 - [x] ECS Scheduled Task
 
-## Structure
+![structure](docs/aws.drawio.svg)
+
+## Terraform Structure
 
 ```console
 .
