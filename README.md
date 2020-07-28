@@ -2,6 +2,10 @@
 
 This is a terraform configuration for deploying a sample Rails application [mpon/rails-blog-example](https://github.com/mpon/rails-blog-example) in Fargate.
 
+This repository is just an example, but we are aiming for a level that can be used even for production operations, and  to complete the CI/CD only with AWS services.
+
+You can use this example to try creating your own AWS infrastructure!
+
 - [x] VPC
 - [x] ECS on Fargate
 - [x] CodePipline
@@ -11,6 +15,9 @@ This is a terraform configuration for deploying a sample Rails application [mpon
 - [x] ECS Scheduled Task
 
 ![structure](docs/aws.drawio.svg)
+![ecs](docs/ecs.png)
+![scheduled_task](docs/scheduled_task.png)
+![codepipeline](docs/codepipeline.png)
 
 ## Terraform Structure
 
@@ -19,11 +26,11 @@ This is a terraform configuration for deploying a sample Rails application [mpon
 └── terraform
     ├── common # resources that exist throught account, like a iam, ecr registry etc.
     │   ├── main.tf # provider, terraform backend settings etc.
-    │   ├── outputs.tf # for another env
+    │   ├── outputs.tf # to use value from another terraform.state
     │   └── variables.tf # for constant variables
-    ├── dev
-    ├── stg
-    ├── prod
+    ├── dev # development environments
+    ├── stg # staging environments
+    ├── prod # production environments
     └── modules  # terraform module
 ```
 
@@ -38,6 +45,7 @@ This is a terraform configuration for deploying a sample Rails application [mpon
 
 ```bash
 # This example use ap-northeast-1 region
+# If you would like to change region, you have to also change TF_VAR_azs
 export REGION=ap-northeast-1
 # S3 bucket to be used by Terraform remote backend
 export TF_VAR_remote_backend=<your s3 bucket>
@@ -55,6 +63,8 @@ aws s3api put-bucket-versioning --bucket $TF_VAR_remote_backend --versioning-con
 
 ### 2. terraform apply(frist time)
 
+We have to create ECR, IAM, and so on first. This output value will be used by another environments.
+
 ```bash
 cd terraform/common
 make init
@@ -64,9 +74,13 @@ make apply
 
 ### 3. terraform apply(prod)
 
+Next, create production environments. If you would fail to apply, please retry once or twice.
+
 ```bash
 cd terraform/prod
 make init
 make plan
-make apply # If you failed to apply, please retry
+make apply
 ```
+
+Then, it shows ALB DNS name in terminal, you can access it.
