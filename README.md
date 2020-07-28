@@ -16,7 +16,7 @@ This is a terraform configuration for deploying a sample Rails application [mpon
 .
 └── terraform
     ├── common # resources that exist throught account, like a iam, ecr registry etc.
-    │   ├── main.tf # provider, terraform  backend settings etc.
+    │   ├── main.tf # provider, terraform backend settings etc.
     │   ├── outputs.tf # for another env
     │   └── variables.tf # for constant variables
     ├── dev

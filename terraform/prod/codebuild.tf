@@ -47,7 +47,7 @@ resource "aws_codebuild_project" "build" {
 
   source {
     type            = "GITHUB"
-    location        = "https://github.com/mpon/rails-blog-example.git"
+    location        = data.github_repository.repo.http_clone_url
     git_clone_depth = 1
     buildspec       = "${aws_s3_bucket.codebuild.arn}/${aws_s3_bucket_object.buildspec.key}"
   }

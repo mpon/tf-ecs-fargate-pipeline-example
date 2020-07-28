@@ -35,8 +35,8 @@ resource "aws_codepipeline" "codepipeline" {
 
       # ref: https://docs.aws.amazon.com/ja_jp/codepipeline/latest/userguide/action-reference-GitHub.html
       configuration = {
-        Owner                = "mpon"
-        Repo                 = "rails-blog-example"
+        Owner                = local.github_owner
+        Repo                 = data.github_repository.repo.name
         Branch               = "master"
         PollForSourceChanges = false
       }
@@ -107,6 +107,10 @@ resource "aws_codepipeline" "codepipeline" {
   }
 }
 
+data "github_repository" "repo" {
+  full_name = "${local.github_owner}/${local.github_repo}"
+}
+
 resource "random_id" "webhook_secret" {
   byte_length = 32
 }
@@ -126,11 +130,6 @@ resource "aws_codepipeline_webhook" "webhook" {
     match_equals = "refs/heads/{Branch}"
   }
 }
-
-data "github_repository" "repo" {
-  full_name = "mpon/rails-blog-example"
-}
-
 
 resource "github_repository_webhook" "webhook" {
   repository = data.github_repository.repo.name
