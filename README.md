@@ -8,7 +8,7 @@ This is a terraform configuration for deploying a sample Rails application [mpon
 - [x] CodeBuild
 - [x] CodeDeploy
 - [x] RDS
-- [ ] ECS Scheduled Task
+- [x] ECS Scheduled Task
 
 ## Structure
 
