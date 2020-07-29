@@ -3,21 +3,18 @@ module "vpc" {
 
   name = "${local.env}-vpc"
   cidr = var.vpc_cidr
-  azs  = var.azs
+  azs  = local.azs
   private_subnets = [
-    cidrsubnet(var.vpc_cidr, 4, 0),
-    cidrsubnet(var.vpc_cidr, 4, 1),
-    cidrsubnet(var.vpc_cidr, 4, 2),
+    cidrsubnet(var.vpc_cidr, 3, 0),
+    cidrsubnet(var.vpc_cidr, 3, 1),
   ]
   public_subnets = [
-    cidrsubnet(var.vpc_cidr, 4, 3),
-    cidrsubnet(var.vpc_cidr, 4, 4),
-    cidrsubnet(var.vpc_cidr, 4, 5),
+    cidrsubnet(var.vpc_cidr, 3, 2),
+    cidrsubnet(var.vpc_cidr, 3, 3),
   ]
   database_subnets = [
-    cidrsubnet(var.vpc_cidr, 8, 96),
-    cidrsubnet(var.vpc_cidr, 8, 97),
-    cidrsubnet(var.vpc_cidr, 8, 98),
+    cidrsubnet(var.vpc_cidr, 3, 4),
+    cidrsubnet(var.vpc_cidr, 3, 5),
   ]
 
   enable_nat_gateway     = true
@@ -33,8 +30,4 @@ module "vpc" {
   tags = {
     Environment = local.env
   }
-}
-
-data "aws_availability_zones" "available" {
-  state = "available"
 }

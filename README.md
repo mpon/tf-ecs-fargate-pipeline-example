@@ -45,7 +45,6 @@ You can use this example to try creating your own AWS infrastructure!
 
 ```bash
 # This example use ap-northeast-1 region
-# If you would like to change region, you have to also change TF_VAR_azs
 export REGION=ap-northeast-1
 # S3 bucket to be used by Terraform remote backend
 export TF_VAR_remote_backend=<your s3 bucket>
