@@ -8,11 +8,12 @@ You can use this example to try creating your own AWS infrastructure!
 
 - [x] VPC
 - [x] ECS on Fargate
-- [x] CodePipline
-- [x] CodeBuild
-- [x] CodeDeploy
-- [x] RDS
+- [x] ECS Application Auto Scaling by Target Tracking Scaling Policies
 - [x] ECS Scheduled Task
+- [x] CodePipline triggerd by GitHub
+- [x] CodeBuild
+- [x] CodeDeploy with B/G Deployments
+- [x] RDS
 
 ![structure](docs/aws.drawio.svg)
 ![ecs](docs/ecs.png)
