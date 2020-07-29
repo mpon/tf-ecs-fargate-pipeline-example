@@ -8,6 +8,7 @@ env:
   parameter-store:
     SECRET_KEY_BASE: "${secret_key_base}"
     DATABASE_URL: "${database_url}"
+    ASSET_BUCKET: "${asset_bucket}"
 
 phases:
   install:
@@ -31,12 +32,19 @@ phases:
         -e SECRET_KEY_BASE=$${SECRET_KEY_BASE}
         -e DATABASE_URL=$${DATABASE_URL}
         $${REPOSITORY_URL}:$${TAG}
-        rake db:create RAILS_ENV=production
+        rails db:create RAILS_ENV=production
       - docker container run
         -e SECRET_KEY_BASE=$${SECRET_KEY_BASE}
         -e DATABASE_URL=$${DATABASE_URL}
         $${REPOSITORY_URL}:$${TAG}
-        rake db:migrate RAILS_ENV=production
+        rails db:migrate RAILS_ENV=production
+      - docker container run
+        -e SECRET_KEY_BASE=$${SECRET_KEY_BASE}
+        -e ASSET_BUCKET=$${ASSET_BUCKET}
+        -e AWS_REGION=$${AWS_REGION}
+        -e AWS_CONTAINER_CREDENTIALS_RELATIVE_URI=$${AWS_CONTAINER_CREDENTIALS_RELATIVE_URI}
+        $${REPOSITORY_URL}:$${TAG}
+        rails assets:sync RAILS_ENV=production
 artifacts:
   files:
     - ${env}/api/taskdef.json

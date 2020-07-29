@@ -26,6 +26,7 @@ resource "aws_s3_bucket_object" "buildspec" {
     env               = local.env
     database_url      = aws_ssm_parameter.database_url.name
     secret_key_base   = aws_ssm_parameter.secret_key_base.name
+    asset_bucket      = aws_ssm_parameter.asset_bucket.name
   })
 }
 

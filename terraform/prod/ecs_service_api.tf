@@ -20,15 +20,17 @@ resource "aws_s3_bucket_object" "api_task_definition" {
   bucket = aws_s3_bucket.codebuild.id
   key    = "${local.env}/api/taskdef.json"
   content = templatefile("${path.module}/templates/api/taskdef.json", {
-    execution_role_arn  = module.ecs_task_execution_iam.service_role_arn
-    awslogs_group       = aws_cloudwatch_log_group.api.name
-    awslogs_region      = data.aws_region.current.name
-    memory              = 512
-    task_role_arn       = module.ecs_task_execution_iam.service_role_arn
-    family              = aws_ecs_task_definition.api.family
-    cpu                 = 256
-    database_url_arn    = aws_ssm_parameter.database_url.arn
-    secret_key_base_arn = aws_ssm_parameter.secret_key_base.arn
+    execution_role_arn        = module.ecs_task_execution_iam.service_role_arn
+    awslogs_group             = aws_cloudwatch_log_group.api.name
+    awslogs_region            = data.aws_region.current.name
+    memory                    = 512
+    task_role_arn             = module.ecs_task_execution_iam.service_role_arn
+    family                    = aws_ecs_task_definition.api.family
+    cpu                       = 256
+    database_url_param_arn    = aws_ssm_parameter.database_url.arn
+    secret_key_base_param_arn = aws_ssm_parameter.secret_key_base.arn
+    asset_bucket_param_arn    = aws_ssm_parameter.asset_bucket.arn
+    asset_host_param_arn      = aws_ssm_parameter.asset_host.arn
   })
 }
 

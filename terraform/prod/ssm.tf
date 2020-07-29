@@ -21,3 +21,17 @@ resource "aws_ssm_parameter" "database_url" {
   # TODO: database user and password should be updated 
   value = "postgres://postgres:password@${aws_db_instance.db.endpoint}/blog_${local.env}"
 }
+
+resource "aws_ssm_parameter" "asset_bucket" {
+  name   = "/${local.env}/ASSET_BUCKET"
+  type   = "SecureString"
+  key_id = "alias/aws/ssm"
+  value  = data.terraform_remote_state.common.outputs.assets_bucket.id
+}
+
+resource "aws_ssm_parameter" "asset_host" {
+  name   = "/${local.env}/ASSET_HOST"
+  type   = "SecureString"
+  key_id = "alias/aws/ssm"
+  value  = data.terraform_remote_state.common.outputs.assets_bucket.bucket_regional_domain_name
+}

@@ -34,11 +34,19 @@
       "secrets": [
         {
           "name": "SECRET_KEY_BASE",
-          "valueFrom": "${secret_key_base_arn}"
+          "valueFrom": "${secret_key_base_param_arn}"
         },
         {
           "name": "DATABASE_URL",
-          "valueFrom": "${database_url_arn}"
+          "valueFrom": "${database_url_param_arn}"
+        },
+        {
+          "name": "ASSET_BUCKET",
+          "valueFrom": "${asset_bucket_param_arn}"
+        },
+        {
+          "name": "ASSET_HOST",
+          "valueFrom": "${asset_host_param_arn}"
         }
       ],
       "image": "<IMAGE1_NAME>",
