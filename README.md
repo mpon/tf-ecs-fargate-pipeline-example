@@ -16,6 +16,7 @@ You can use this example to try creating your own AWS infrastructure!
 - [x] RDS
 
 ![structure](docs/aws.drawio.svg)
+![pipeline](docs/pipeline.drawio.svg)
 ![ecs](docs/ecs.png)
 ![scheduled_task](docs/scheduled_task.png)
 ![codepipeline](docs/codepipeline.png)
