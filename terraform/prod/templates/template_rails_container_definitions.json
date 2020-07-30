@@ -5,7 +5,9 @@
     "cpu": 256,
     "memory": 512,
     "command": [
-      "ruby", "-run", "-e", "httpd", ".", "-p", "3000"
+      "sh",
+      "-c",
+      "mkdir okcomputer && touch okcomputer/all && ruby -run -e httpd . -p 3000"
     ],
     "essential": true,
     "portMappings": [

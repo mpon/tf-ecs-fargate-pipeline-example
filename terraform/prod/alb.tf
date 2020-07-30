@@ -40,7 +40,7 @@ resource "aws_lb_target_group" "api_blue" {
   vpc_id      = module.vpc.vpc_id
 
   health_check {
-    path = "/" # TODO: change healthcheck path
+    path = "/okcomputer/all"
   }
 }
 
@@ -52,7 +52,7 @@ resource "aws_lb_target_group" "api_green" {
   vpc_id      = module.vpc.vpc_id
 
   health_check {
-    path = "/" # TODO: change healthcheck path
+    path = "/okcomputer/all"
   }
 }
 
@@ -64,7 +64,7 @@ resource "aws_lb_target_group" "web_blue" {
   vpc_id      = module.vpc.vpc_id
 
   health_check {
-    path = "/" # TODO: change healthcheck path
+    path = "/okcomputer/all"
   }
 }
 
