@@ -91,4 +91,30 @@ Then, it shows ALB DNS name in terminal, you can access it.
 ```bash
 cd terraform/prod
 terraform destroy
+cd terraform/common
+terraform destroy
 ```
+
+## Deploy pipeline
+
+### staging
+
+1. push `release` branch
+2. start staging CodePipeline
+3. start CodeBuild
+4. build docker image and push ECR
+5. migrate database
+6. sync assets
+7. get files to deploy ECS from S3 (taskdef, appspec)
+8. start CodeDeploy B/G Deployments
+
+### production
+
+1. push `master` branch
+2. start staging CodePipeline
+3. start CodeBuild
+4. build docker image and push ECR
+5. migrate database
+6. sync assets
+7. get files to deploy ECS from S3 (taskdef, appspec)
+8. start CodeDeploy B/G Deployments

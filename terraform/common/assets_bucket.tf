@@ -3,7 +3,8 @@ resource "random_pet" "assets" {
 }
 
 resource "aws_s3_bucket" "assets" {
-  bucket = "server-assets-${random_pet.assets.id}"
+  bucket        = "server-assets-${random_pet.assets.id}"
+  force_destroy = true # to make it easier to destroy at this repository example
 }
 
 resource "aws_s3_bucket_policy" "assets" {
