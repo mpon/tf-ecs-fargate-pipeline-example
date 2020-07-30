@@ -47,6 +47,13 @@
             "valueFrom": "${asset_host_param_arn}"
           }
         ],
+        "healthCheck": {
+          "command": ["CMD-SHELL", "curl -f localhost:3000/okcomputer || exit 1"],
+          "interval": 30,
+          "timeout": 5,
+          "retries": 3,
+          "startPeriod": 15
+        },
         "image": "<IMAGE1_NAME>",
         "essential": true,
         "name": "rails"
