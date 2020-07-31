@@ -1,0 +1,39 @@
+[
+  {
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "${awslogs_group}",
+        "awslogs-region": "${awslogs_region}",
+        "awslogs-stream-prefix": "rails"
+      }
+    },
+    "environment": [
+      {
+        "name": "AWS_REGION",
+        "value": "ap-northeast-1"
+      },
+      {
+        "name": "RAILS_LOG_TO_STDOUT",
+        "value": "true"
+      },
+      {
+        "name": "RAILS_ENV",
+        "value": "production"
+      }
+    ],
+    "secrets": [
+      {
+        "name": "SECRET_KEY_BASE",
+        "valueFrom": "${secret_key_base_arn}"
+      },
+      {
+        "name": "DATABASE_URL",
+        "valueFrom": "${database_url_arn}"
+      }
+    ],
+    "image": "${image}",
+    "essential": true,
+    "name": "rails"
+  }
+]

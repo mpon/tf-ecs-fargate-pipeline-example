@@ -1,0 +1,70 @@
+{
+  "executionRoleArn": "${execution_role_arn}",
+  "containerDefinitions": [
+    {
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "${awslogs_group}",
+          "awslogs-region": "${awslogs_region}",
+          "awslogs-stream-prefix": "rails"
+        }
+      },
+      "portMappings": [
+        {
+          "hostPort": 3000,
+          "protocol": "tcp",
+          "containerPort": 3000
+        }
+      ],
+      "environment": [
+        {
+          "name": "AWS_REGION",
+          "value": "ap-northeast-1"
+        },
+        {
+          "name": "RAILS_LOG_TO_STDOUT",
+          "value": "true"
+        },
+        {
+          "name": "RAILS_ENV",
+          "value": "production"
+        }
+      ],
+      "secrets": [
+        {
+          "name": "SECRET_KEY_BASE",
+          "valueFrom": "${secret_key_base_param_arn}"
+        },
+        {
+          "name": "DATABASE_URL",
+          "valueFrom": "${database_url_param_arn}"
+        },
+        {
+          "name": "ASSET_BUCKET",
+          "valueFrom": "${asset_bucket_param_arn}"
+        },
+        {
+          "name": "ASSET_HOST",
+          "valueFrom": "${asset_host_param_arn}"
+        }
+      ],
+      "healthCheck": {
+        "command": ["CMD-SHELL", "curl -f localhost:3000/okcomputer || exit 1"],
+        "interval": 30,
+        "timeout": 5,
+        "retries": 3,
+        "startPeriod": 15
+      },
+      "image": "<IMAGE1_NAME>",
+      "essential": true,
+      "name": "rails"
+    }
+  ],
+  "memory": "${memory}",
+  "taskRoleArn": "${task_role_arn}",
+  "family": "${family}",
+  "requiresCompatibilities": ["FARGATE"],
+  "networkMode": "awsvpc",
+  "cpu": "${cpu}"
+}

@@ -1,0 +1,21 @@
+[
+  {
+    "name": "rails",
+    "image": "ruby:alpine",
+    "cpu": 256,
+    "memory": 512,
+    "command": [
+      "sh",
+      "-c",
+      "mkdir okcomputer && touch okcomputer/all && ruby -run -e httpd . -p 3000"
+    ],
+    "essential": true,
+    "portMappings": [
+      {
+        "containerPort": 3000,
+        "protocol": "tcp",
+        "hostPort": 3000
+      }
+    ]
+  }
+]
