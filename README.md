@@ -99,7 +99,7 @@ terraform destroy
 
 ### staging
 
-1. push `release` branch
+1. push `staging` branch
 2. start staging CodePipeline
 3. start CodeBuild
 4. build docker image and push ECR
