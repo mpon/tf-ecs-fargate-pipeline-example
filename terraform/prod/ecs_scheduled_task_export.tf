@@ -16,6 +16,7 @@ resource "aws_ecs_task_definition" "export" {
     image               = data.terraform_remote_state.common.outputs.ecr_rails_blog_example_repository_url
     awslogs_group       = aws_cloudwatch_log_group.export.name
     awslogs_region      = data.aws_region.current.name
+    aws_region          = data.aws_region.current.name
     database_url_arn    = aws_ssm_parameter.database_url.arn
     secret_key_base_arn = aws_ssm_parameter.secret_key_base.arn
   })

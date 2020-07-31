@@ -13,15 +13,18 @@ resource "aws_s3_bucket_policy" "access_logs" {
   policy = data.aws_iam_policy_document.access_logs.json
 }
 
+data "aws_elb_service_account" "main" {}
+
 data "aws_iam_policy_document" "access_logs" {
-  # Allow from Elastic Load Balancing account in ap-northeast-1
+  # Allow from Elastic Load Balancing account
+  # ref: https://docs.aws.amazon.com/ja_jp/elasticloadbalancing/latest/application/load-balancer-access-logs.html
   statement {
     actions   = ["s3:PutObject"]
     resources = ["${aws_s3_bucket.access_logs.arn}/*"]
 
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:iam::582318560864:root"]
+      identifiers = [data.aws_elb_service_account.main.arn]
     }
   }
 }

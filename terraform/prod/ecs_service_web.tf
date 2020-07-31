@@ -23,6 +23,7 @@ resource "aws_s3_bucket_object" "web_task_definition" {
     execution_role_arn        = module.ecs_task_execution_iam.service_role_arn
     awslogs_group             = aws_cloudwatch_log_group.web.name
     awslogs_region            = data.aws_region.current.name
+    aws_region                = data.aws_region.current.name
     memory                    = 512
     task_role_arn             = module.ecs_task_execution_iam.service_role_arn
     family                    = aws_ecs_task_definition.web.family

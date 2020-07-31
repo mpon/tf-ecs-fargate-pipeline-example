@@ -38,7 +38,7 @@ resource "aws_codepipeline" "codepipeline" {
       configuration = {
         Owner                = dirname(data.github_repository.repo.full_name)
         Repo                 = data.github_repository.repo.name
-        Branch               = "master"
+        Branch               = var.target_branch
         PollForSourceChanges = false
       }
     }
