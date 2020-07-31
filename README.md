@@ -2,9 +2,9 @@
 
 This is a terraform configuration for deploying a sample Rails application [mpon/rails-blog-example](https://github.com/mpon/rails-blog-example) in Fargate.
 
-This repository is just an example, but we are aiming for a level that can be used even for production operations, and  to complete the CI/CD only with AWS services.
+This repository is just an example, but we are aiming for a level that can be used even for production operations, and  to complete the CI/CD only with AWS services, also without using shell like `sed` to replace image tag.
 
-You can use this example to try creating your own AWS infrastructure!
+You can use this repository to try creating your own AWS infrastructure!
 
 - [x] VPC
 - [x] ECS on Fargate
@@ -46,19 +46,26 @@ You can use this example to try creating your own AWS infrastructure!
 ### 0. environments
 
 ```bash
-# This example use ap-northeast-1 region
-export REGION=ap-northeast-1
+# You can set any region
+export AWS_DEFAULT_REGION=ap-northeast-1
+
 # S3 bucket to be used by Terraform remote backend
 export TF_VAR_remote_backend=<your s3 bucket>
+
 # GitHub personal token to be used by github provider
 export GITHUB_TOKEN=***********************
+
+# Configure aws-cli.
+# We have not confirmed the minimum policy, it works AdministratorAccess at least.
+# NOTE: In production environments, you have to reduce policy.
+aws configure
 ```
 
 ### 1. create remote backend
 
 ```bash
-aws s3api create-bucket --bucket $TF_VAR_remote_backend --region $REGION \
-    --create-bucket-configuration LocationConstraint=$REGION
+aws s3api create-bucket --bucket $TF_VAR_remote_backend --region $AWS_DEFAULT_REGION \
+    --create-bucket-configuration LocationConstraint=$AWS_DEFAULT_REGION
 aws s3api put-bucket-versioning --bucket $TF_VAR_remote_backend --versioning-configuration Status=Enabled
 ```
 
@@ -73,22 +80,25 @@ make plan
 make apply
 ```
 
-### 3. terraform apply(prod)
+### 3. terraform apply staging and production
 
-Next, create production environments. If you would fail to apply, please retry once or twice.
+Next, create some environments. If you would fail to apply, please retry once or twice.
 
 ```bash
-cd terraform/prod
+cd terraform/stg # also terraform/prod
 make init
 make plan
 make apply
 ```
 
 Then, it shows ALB DNS name in terminal, you can access it.
+At the same time, CodePipeline will be started and deploy rails application after a while.
 
 ## Clean up
 
 ```bash
+cd terraform/stg
+terraform destroy
 cd terraform/prod
 terraform destroy
 cd terraform/common
@@ -118,3 +128,11 @@ terraform destroy
 6. sync assets
 7. get files to deploy ECS from S3 (taskdef, appspec)
 8. start CodeDeploy B/G Deployments
+
+## Note for using in production
+
+- Use HTTPS listener
+- Set enable_deletion_protection of ALB to true
+- Set force_destroy of S3 bucket to false
+- Change RDS username/password
+- Change resource name using random_pet that makes it unique in this example
