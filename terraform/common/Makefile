@@ -1,5 +1,5 @@
 init:
-	terraform init -backend-config="bucket=${REMOTE_BACKEND}"
+	terraform init -backend-config="bucket=${TF_VAR_remote_backend}"
 
 fmt:
 	terraform fmt -recursive -diff ../
