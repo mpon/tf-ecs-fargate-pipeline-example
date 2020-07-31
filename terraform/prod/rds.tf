@@ -1,5 +1,5 @@
 resource "aws_db_instance" "db" {
-  identifier                   = "rails-blog"
+  identifier                   = "${local.env}-rails-blog"
   allocated_storage            = 20
   max_allocated_storage        = 1000
   storage_type                 = "gp2"

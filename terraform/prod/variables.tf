@@ -5,7 +5,7 @@ locals {
 
 variable "vpc_cidr" {
   type    = string
-  default = "10.10.0.0/16"
+  default = "10.20.0.0/16"
 }
 
 variable "github_owner" {
@@ -16,6 +16,11 @@ variable "github_owner" {
 variable "github_repo" {
   type    = string
   default = "rails-blog-example"
+}
+
+variable "target_branch" {
+  type    = string
+  default = "master"
 }
 
 variable "remote_backend" {
