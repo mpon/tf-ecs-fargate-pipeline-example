@@ -109,7 +109,7 @@ terraform destroy
 
 ### staging
 
-1. push `staging` branch
+1. push `staging` branch in [mpon/rails-blog-example](https://github.com/mpon/rails-blog-example)
 2. start staging CodePipeline
 3. start CodeBuild
 4. build docker image and push ECR
@@ -120,8 +120,8 @@ terraform destroy
 
 ### production
 
-1. push `master` branch
-2. start staging CodePipeline
+1. push `master` branch in [mpon/rails-blog-example](https://github.com/mpon/rails-blog-example)
+2. start production CodePipeline
 3. start CodeBuild
 4. build docker image and push ECR
 5. migrate database
