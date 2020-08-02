@@ -47,7 +47,6 @@ resource "aws_ecs_service" "api" {
   cluster         = aws_ecs_cluster.cluster.id
   task_definition = aws_ecs_task_definition.api.arn
   desired_count   = 0 # desired_count will be updated by autoscaling
-  launch_type     = "FARGATE"
 
   load_balancer {
     target_group_arn = aws_lb_target_group.api_blue.arn
@@ -62,6 +61,17 @@ resource "aws_ecs_service" "api" {
 
   deployment_controller {
     type = "CODE_DEPLOY"
+  }
+
+  capacity_provider_strategy {
+    capacity_provider = "FARGATE"
+    weight            = 2
+    base              = 1
+  }
+
+  capacity_provider_strategy {
+    capacity_provider = "FARGATE_SPOT"
+    weight            = 1
   }
 
   lifecycle {
@@ -86,8 +96,8 @@ module "api_autoscaling" {
 
   cluster_name     = aws_ecs_cluster.cluster.name
   service_name     = aws_ecs_service.api.name
-  min_capacity     = 1
-  max_capacity     = 1
+  min_capacity     = 3
+  max_capacity     = 6
   cpu_target_value = 60
   role_arn         = data.terraform_remote_state.common.outputs.ecs_application_autoscaling_role_arn
 }
