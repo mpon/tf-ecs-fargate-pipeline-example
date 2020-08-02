@@ -7,7 +7,7 @@ This repository is just an example, but we are aiming for a level that can be us
 You can use this repository to try creating your own AWS infrastructure!
 
 - [x] VPC
-- [x] ECS on Fargate
+- [x] ECS on Fargate and Fargate Spot with capacity provider
 - [x] ECS Application Auto Scaling by Target Tracking Scaling Policies
 - [x] ECS Scheduled Task
 - [x] CodePipline triggerd by GitHub
@@ -18,6 +18,7 @@ You can use this repository to try creating your own AWS infrastructure!
 ![structure](docs/aws.drawio.svg)
 ![pipeline](docs/pipeline.drawio.svg)
 ![ecs](docs/ecs.png)
+![fargate_spot](docs/fargate_spot.png)
 ![scheduled_task](docs/scheduled_task.png)
 ![codepipeline](docs/codepipeline.png)
 
