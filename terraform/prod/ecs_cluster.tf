@@ -1,5 +1,6 @@
 resource "aws_ecs_cluster" "cluster" {
-  name = "${local.env}-cluster"
+  name               = "${local.env}-cluster"
+  capacity_providers = ["FARGATE", "FARGATE_SPOT"]
 }
 
 module "ecs_task_execution_iam" {

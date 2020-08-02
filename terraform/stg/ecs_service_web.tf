@@ -47,7 +47,6 @@ resource "aws_ecs_service" "web" {
   cluster         = aws_ecs_cluster.cluster.id
   task_definition = aws_ecs_task_definition.web.arn
   desired_count   = 0 # desired_count will be updated by autoscaling
-  launch_type     = "FARGATE"
 
   load_balancer {
     target_group_arn = aws_lb_target_group.web_blue.arn
@@ -62,6 +61,11 @@ resource "aws_ecs_service" "web" {
 
   deployment_controller {
     type = "CODE_DEPLOY"
+  }
+
+  capacity_provider_strategy {
+    capacity_provider = "FARGATE_SPOT"
+    weight            = 100
   }
 
   lifecycle {
