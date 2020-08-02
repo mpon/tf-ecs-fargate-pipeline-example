@@ -7,7 +7,7 @@ provider "github" {
     If github provider would be released 3.0.0 major version, you will have to modify version.
     ref: https://github.com/terraform-providers/terraform-provider-github/blob/master/CHANGELOG.md#290-june-29-2020
   */
-  version = "= 2.9.0"
+  version = "=2.9.2"
   owner   = "mpon"
 }
 
