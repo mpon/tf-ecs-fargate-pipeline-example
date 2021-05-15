@@ -12,7 +12,7 @@ provider "github" {
 }
 
 provider "random" {
-  version = "~> 2.3"
+  version = "~> 3.0"
 }
 
 terraform {
